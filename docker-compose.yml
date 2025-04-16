@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: credit-simulator-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5442
+      - DB_NAME=credit_simulator
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+    networks:
+      - credit-network
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: credit-simulator-postgres
+    ports:
+      - "5442:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=credit_simulator
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - credit-network
+
+networks:
+  credit-network:
+    driver: bridge
+
+volumes:
+  postgres-data:

@@ -33,10 +33,13 @@ public class LoadSimulatorService {
     }
 
     public int calculateAge(LocalDate dateOfBirth){
+        if (dateOfBirth.isAfter(LocalDate.now())) throw new IllegalArgumentException("A data de nascimento não pode ser no futuro.");
         return Period.between(dateOfBirth, LocalDate.now()).getYears();
     }
 
     public BigDecimal getAnnualInterestRateByAge(int age){
+        if (age < 0) throw new IllegalArgumentException("A idade não pode ser negativa.");
+
         if (age <= 25) return BigDecimal.valueOf(0.05);
         if (age <= 40) return BigDecimal.valueOf(0.03);
         if (age <= 60) return BigDecimal.valueOf(0.02);
@@ -44,6 +47,10 @@ public class LoadSimulatorService {
     }
 
     public BigDecimal calculateInstallment(BigDecimal pv, BigDecimal r, int n){
+        if(pv.compareTo(BigDecimal.ZERO) <= 0 || r.compareTo(BigDecimal.ZERO) <= 0 || n <= 0) {
+            throw new IllegalArgumentException("Argumentos inválidos para o calculo.");
+        }
+
         // Tabela Price
         // Fórmula PMT: (pv * r) / (1 - (1 + r)^-n)
 

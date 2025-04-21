@@ -1,5 +1,6 @@
 package com.github.aleffalves.credit_simulator.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.aleffalves.credit_simulator.domain.LoadSimulatorRequest;
 import com.github.aleffalves.credit_simulator.service.LoadSimulatorService;
@@ -13,7 +14,14 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
+import static org.hibernate.validator.internal.util.Contracts.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -100,6 +108,58 @@ public class LoadSimularControllerTest {
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    void shouldProcess_1000Simulations_InLessThan_TwoSeconds() throws Exception {
+        int numSimulations = 1000;
+        long startTime = System.currentTimeMillis();
+
+        for (int i = 0; i < numSimulations; i++) {
+            LocalDate dob = LocalDate.now().minusYears(20 + (i % 60));
+            BigDecimal loanAmount = BigDecimal.valueOf(10000 + (i * 100));
+            int term = 12 + (i % 48);
+
+            LoadSimulatorRequest request = LoadSimulatorRequest.builder()
+                    .loanAmount(loanAmount)
+                    .dateOfBirth(dob)
+                    .paymentTermMonths(term)
+                    .build();
+
+            mockMvc.perform(post("/load-simulator")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request)));
+        }
+
+        long endTime = System.currentTimeMillis();
+        long duration = endTime - startTime;
+        assertTrue(duration < 2000, "O processamento de 1000 simulações levou mais de 2 segundos: " + duration + "ms");
+    }
+
+    @Test
+    void shouldProcess_10000Simulations_InLessThan_TenSeconds() throws Exception {
+        int numSimulations = 10000;
+        long startTime = System.currentTimeMillis();
+
+        for (int i = 0; i < numSimulations; i++) {
+            LocalDate dob = LocalDate.now().minusYears(20 + (i % 60));
+            BigDecimal loanAmount = BigDecimal.valueOf(10000 + (i * 100));
+            int term = 12 + (i % 48);
+
+            LoadSimulatorRequest request = LoadSimulatorRequest.builder()
+                    .loanAmount(loanAmount)
+                    .dateOfBirth(dob)
+                    .paymentTermMonths(term)
+                    .build();
+
+            mockMvc.perform(post("/load-simulator")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(request)));
+        }
+
+        long endTime = System.currentTimeMillis();
+        long duration = endTime - startTime;
+        assertTrue(duration < 10000, "O processamento de 10000 simulações levou mais de 10 segundos: " + duration + "ms");
     }
 
 }

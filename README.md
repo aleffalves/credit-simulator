@@ -13,7 +13,9 @@ A API Credit Simulator permite aos usuários simular empréstimos e visualizar a
     *   Data de nascimento do cliente.
     *   Prazo de pagamento em meses.
 *   **Taxa de Juros Dinâmica:** A taxa de juros é calculada com base na idade do cliente:
-    *   Ata 60 anos: 2% ao ano.
+    *   Até 25 anos: 5% ao ano.
+    *   De 26 a 40 anos: 3% ao ano.
+    *   De 41 a 60 anos: 2% ao ano.
     *   Acima de 60 anos: 4% ao ano.
 *   **Validação de Entrada:** Valida o valor do empréstimo (deve ser positivo), data de nascimento (deve ser no passado) e prazo de pagamento (deve ser positivo).
 *   **Tratamento de Erros:** Retorna códigos de status HTTP e mensagens apropriadas para entradas inválidas e erros internos do servidor.

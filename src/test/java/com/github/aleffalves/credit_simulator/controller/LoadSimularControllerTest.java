@@ -133,11 +133,11 @@ public class LoadSimularControllerTest {
 
         long endTime = System.currentTimeMillis();
         long duration = endTime - startTime;
-        assertTrue(duration < 2000, "O processamento de 1000 simulações levou mais de 2 segundos: " + duration + "ms");
+        assertTrue(duration < 2000, "O processamento de 1.000 simulações levou mais de 2 segundos: " + duration + "ms");
     }
 
     @Test
-    void shouldProcess_10000Simulations_InLessThan_TenSeconds() throws Exception {
+    void shouldProcess_10000Simulations_InLessThan_FiveSeconds() throws Exception {
         int numSimulations = 10000;
         long startTime = System.currentTimeMillis();
 
@@ -159,7 +159,33 @@ public class LoadSimularControllerTest {
 
         long endTime = System.currentTimeMillis();
         long duration = endTime - startTime;
-        assertTrue(duration < 10000, "O processamento de 10000 simulações levou mais de 10 segundos: " + duration + "ms");
+        assertTrue(duration < 5000, "O processamento de 10.000 simulações levou mais de 5 segundos: " + duration + "ms");
+    }
+
+    @Test
+    void shouldProcess_100000Simulations_InLessThan_TenSeconds() throws Exception {
+        int numSimulations = 100000;
+        long startTime = System.currentTimeMillis();
+
+        for (int i = 0; i < numSimulations; i++) {
+            LocalDate dob = LocalDate.now().minusYears(20 + (i % 60));
+            BigDecimal loanAmount = BigDecimal.valueOf(10000 + (i * 100));
+            int term = 12 + (i % 48);
+
+            LoadSimulatorRequest request = LoadSimulatorRequest.builder()
+                    .loanAmount(loanAmount)
+                    .dateOfBirth(dob)
+                    .paymentTermMonths(term)
+                    .build();
+
+            mockMvc.perform(post("/load-simulator")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(request)));
+        }
+
+        long endTime = System.currentTimeMillis();
+        long duration = endTime - startTime;
+        assertTrue(duration < 10000, "O processamento de 100.000 simulações levou mais de 10 segundos: " + duration + "ms");
     }
 
 }

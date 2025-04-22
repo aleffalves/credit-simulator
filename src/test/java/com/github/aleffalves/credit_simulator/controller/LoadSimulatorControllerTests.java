@@ -106,19 +106,16 @@ public class LoadSimulatorControllerTests {
     @Test
     void shouldProcess_1000Simulations_InLessThan_TwoSeconds() throws Exception {
         int numSimulations = 1000;
+        LocalDate dob = LocalDate.now().minusYears(30);
+        LoadSimulatorRequest request = LoadSimulatorRequest.builder()
+                .loanAmount(new BigDecimal(10000))
+                .dateOfBirth(dob)
+                .paymentTermMonths(12)
+                .build();
+
         long startTime = System.currentTimeMillis();
 
         for (int i = 0; i < numSimulations; i++) {
-            LocalDate dob = LocalDate.now().minusYears(20 + (i % 60));
-            BigDecimal loanAmount = BigDecimal.valueOf(10000 + (i * 100));
-            int term = 12 + (i % 48);
-
-            LoadSimulatorRequest request = LoadSimulatorRequest.builder()
-                    .loanAmount(loanAmount)
-                    .dateOfBirth(dob)
-                    .paymentTermMonths(term)
-                    .build();
-
             mockMvc.perform(post("/load-simulator")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(request)));
@@ -132,19 +129,16 @@ public class LoadSimulatorControllerTests {
     @Test
     void shouldProcess_10000Simulations_InLessThan_FiveSeconds() throws Exception {
         int numSimulations = 10000;
+        LocalDate dob = LocalDate.now().minusYears(30);
+        LoadSimulatorRequest request = LoadSimulatorRequest.builder()
+                .loanAmount(new BigDecimal(10000))
+                .dateOfBirth(dob)
+                .paymentTermMonths(12)
+                .build();
+
         long startTime = System.currentTimeMillis();
 
         for (int i = 0; i < numSimulations; i++) {
-            LocalDate dob = LocalDate.now().minusYears(20 + (i % 60));
-            BigDecimal loanAmount = BigDecimal.valueOf(10000 + (i * 100));
-            int term = 12 + (i % 48);
-
-            LoadSimulatorRequest request = LoadSimulatorRequest.builder()
-                    .loanAmount(loanAmount)
-                    .dateOfBirth(dob)
-                    .paymentTermMonths(term)
-                    .build();
-
             mockMvc.perform(post("/load-simulator")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request)));
@@ -158,18 +152,16 @@ public class LoadSimulatorControllerTests {
     @Test
     void shouldProcess_100000Simulations_InLessThan_TenSeconds() throws Exception {
         int numSimulations = 100000;
+        LocalDate dob = LocalDate.now().minusYears(30);
+        LoadSimulatorRequest request = LoadSimulatorRequest.builder()
+                .loanAmount(new BigDecimal(10000))
+                .dateOfBirth(dob)
+                .paymentTermMonths(12)
+                .build();
+
         long startTime = System.currentTimeMillis();
 
         for (int i = 0; i < numSimulations; i++) {
-            LocalDate dob = LocalDate.now().minusYears(20 + (i % 60));
-            BigDecimal loanAmount = BigDecimal.valueOf(10000 + (i * 100));
-            int term = 12 + (i % 48);
-
-            LoadSimulatorRequest request = LoadSimulatorRequest.builder()
-                    .loanAmount(loanAmount)
-                    .dateOfBirth(dob)
-                    .paymentTermMonths(term)
-                    .build();
 
             mockMvc.perform(post("/load-simulator")
                     .contentType(MediaType.APPLICATION_JSON)

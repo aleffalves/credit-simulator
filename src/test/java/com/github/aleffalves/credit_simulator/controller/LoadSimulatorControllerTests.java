@@ -1,6 +1,5 @@
 package com.github.aleffalves.credit_simulator.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.aleffalves.credit_simulator.domain.LoadSimulatorRequest;
 import com.github.aleffalves.credit_simulator.service.LoadSimulatorService;
@@ -14,12 +13,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 import static org.hibernate.validator.internal.util.Contracts.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -28,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class LoadSimularControllerTest {
+public class LoadSimulatorControllerTests {
 
     @Autowired
     private MockMvc mockMvc;

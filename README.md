@@ -97,7 +97,7 @@ O projeto segue uma arquitetura em camadas, comum em aplicações Spring Boot:
 *   **Camada de Serviço:**
     *   Contém a lógica de negócio principal para a simulação de empréstimo.
     *   Lida com o cálculo de idade, taxa de juros, valor das parcelas, valores totais e juros totais.
-    *   Define e usa constantes para taxas de juros e faixas etárias, e usa tratamento de exceções.
+    *   Define taxas de juros e faixas etárias, e usa tratamento de exceções.
 *   **Camada de Domínio:**
     *   Contém DTOs (`LoadSimulatorRequest`, `LoadSimulatorResponse`).
     *   DTOs são usados para transferir dados entre o Controller e o Service.
